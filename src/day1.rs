@@ -27,17 +27,14 @@ fn two() {
         .collect::<Vec<i32>>()
         .iter()
         .cycle()
-        .fold_while(
-            (0, HashSet::new()),
-            |(current_freq, mut observed): (i32, HashSet<i32>), val| {
-                if observed.contains(&current_freq) {
-                    Done((current_freq, observed))
-                } else {
-                    observed.insert(current_freq);
-                    Continue((current_freq + val, observed))
-                }
-            },
-        ).into_inner();
+        .fold_while((0, HashSet::new()), |(current_freq, mut observed), val| {
+            if observed.contains(&current_freq) {
+                Done((current_freq, observed))
+            } else {
+                observed.insert(current_freq);
+                Continue((current_freq + val, observed))
+            }
+        }).into_inner();
     println!("1-2: {}", answer);
 }
 
