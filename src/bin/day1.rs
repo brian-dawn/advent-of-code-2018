@@ -40,7 +40,7 @@ fn two() -> Result<(), Error> {
     Ok(())
 }
 
-pub fn run() {
+fn main() {
     one().unwrap();
     two().unwrap();
 }
