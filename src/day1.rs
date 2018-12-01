@@ -6,7 +6,7 @@ use std::io::{BufRead, BufReader};
 use std::collections::HashSet;
 
 fn one() {
-    let input = File::open("../input/day1-1.txt").unwrap();
+    let input = File::open("input/day1-1.txt").unwrap();
     let buffered = BufReader::new(input);
 
     let answer = buffered
@@ -18,12 +18,12 @@ fn one() {
 }
 
 fn two() {
-    let input = File::open("../input/day1-1.txt").unwrap();
+    let input = File::open("input/day1-1.txt").unwrap();
     let buffered = BufReader::new(input);
 
     let (answer, _) = buffered
         .lines()
-        .map(|line| line.unwrap().parse::<i32>().unwrap())
+        .map(|line| line.unwrap().parse().unwrap())
         .collect::<Vec<i32>>()
         .iter()
         .cycle()
@@ -44,5 +44,4 @@ fn two() {
 pub fn run() {
     one();
     two();
-}
 }
