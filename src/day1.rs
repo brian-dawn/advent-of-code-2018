@@ -1,4 +1,3 @@
-use failure::bail;
 use failure::Error;
 use itertools::FoldWhile::{Continue, Done};
 use itertools::Itertools;
