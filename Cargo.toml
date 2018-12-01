@@ -5,3 +5,4 @@ authors = ["Brian Dawn <brian.t.dawn@gmail.com>"]
 
 [dependencies]
 itertools = "0.7.11"
+failure = "0.1.3"
