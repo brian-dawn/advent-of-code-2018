@@ -9,10 +9,10 @@ fn one() {
     let input = File::open("input/day1-1.txt").unwrap();
     let buffered = BufReader::new(input);
 
-    let answer = buffered
+    let answer: i32 = buffered
         .lines()
         .map(|line| line.unwrap().parse::<i32>().unwrap())
-        .fold(0, |acc, val| acc + val);
+        .sum();
 
     println!("1-1: {}", answer);
 }
