@@ -1,0 +1,7 @@
+[package]
+name = "advent-of-code-2018"
+version = "0.1.0"
+authors = ["Brian Dawn <brian.t.dawn@gmail.com>"]
+
+[dependencies]
+itertools = "0.7.11"
