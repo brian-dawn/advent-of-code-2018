@@ -35,7 +35,8 @@ fn two() -> Result<(), Error> {
                 observed.insert(current_freq);
                 Continue((current_freq + val, observed))
             }
-        }).into_inner();
+        })
+        .into_inner();
     println!("1-2: {}", answer);
     Ok(())
 }
