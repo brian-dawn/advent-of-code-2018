@@ -1,6 +1,4 @@
 use failure::{format_err, Error};
-use itertools::FoldWhile::{Continue, Done};
-use itertools::Itertools;
 use regex::Regex;
 use std::collections::HashSet;
 use std::fs::File;
