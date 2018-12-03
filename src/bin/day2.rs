@@ -1,7 +1,6 @@
 use failure::Error;
 use itertools::FoldWhile::{Continue, Done};
 use itertools::Itertools;
-use std::collections::HashSet;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
@@ -12,9 +11,9 @@ fn read_input() -> Result<Vec<String>, Error> {
     buffered.lines().map(|ln| Ok(ln?)).collect()
 }
 
-type Occurences = Vec<(char, usize)>;
+type Occurences<'a> = &'a [(char, usize)];
 
-fn occurrences(s: &str) -> Occurences {
+fn occurrences(s: &str) -> Vec<(char, usize)> {
     let mut chars: Vec<char> = s.chars().collect();
     chars.sort_by(|a, b| b.cmp(a));
     chars
@@ -25,7 +24,7 @@ fn occurrences(s: &str) -> Occurences {
         .collect()
 }
 
-fn has_n(s: &Occurences, n: usize) -> bool {
+fn has_n(s: Occurences, n: usize) -> bool {
     for (_c, count) in s {
         if *count == n {
             return true;
@@ -34,11 +33,11 @@ fn has_n(s: &Occurences, n: usize) -> bool {
     false
 }
 
-fn has_two(s: &Occurences) -> bool {
+fn has_two(s: Occurences) -> bool {
     has_n(s, 2)
 }
 
-fn has_three(s: &Occurences) -> bool {
+fn has_three(s: Occurences) -> bool {
     has_n(s, 3)
 }
 
@@ -49,11 +48,11 @@ fn one() -> Result<(), Error> {
             .map(|s| occurrences(&s))
             .fold((0, 0), |(mut two, mut three), val| {
                 if has_two(&val) {
-                    two = two + 1;
+                    two += 1
                 }
 
                 if has_three(&val) {
-                    three = three + 1;
+                    three += 1
                 }
                 (two, three)
             });
@@ -61,6 +60,45 @@ fn one() -> Result<(), Error> {
     Ok(())
 }
 
+fn only_one_letter_off(a: &str, b: &str) -> Option<usize> {
+    let (maybe_index, _) = a
+        .chars()
+        .zip(b.chars())
+        // Track the maybe position of the char that is off.
+        .fold_while((None, 0), |(seen, index), (a_val, b_val)| {
+            if a_val == b_val {
+                Continue((seen, index + 1))
+            } else if seen == None {
+                Continue((Some(index), index + 1))
+            } else {
+                // We saw more than 2 differences.
+                Done((None, 0))
+            }
+        })
+        .into_inner();
+    maybe_index
+}
+
+fn two() -> Result<(), Error> {
+    let input = read_input()?;
+    for x in &input {
+        for y in &input {
+            if let Some(bad_index) = only_one_letter_off(&x, &y) {
+                let answer: String = x
+                    .chars()
+                    .zip(0..)
+                    .filter(|(_, index)| bad_index != *index)
+                    .map(|e| e.0)
+                    .collect();
+                println!("2-2: {}", answer);
+                return Ok(());
+            }
+        }
+    }
+    Ok(())
+}
+
 fn main() {
     one().unwrap();
+    two().unwrap();
 }
